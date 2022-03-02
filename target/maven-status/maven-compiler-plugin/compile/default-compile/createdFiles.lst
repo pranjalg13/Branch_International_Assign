@@ -1,0 +1,5 @@
+com\branch\lending\service\LoanLendingService.class
+com\branch\lending\service\WritingToFileService.class
+com\branch\lending\pojo\LoanObj.class
+com\branch\lending\pojo\Repayment.class
+com\branch\lending\LendingOracleApplication.class
