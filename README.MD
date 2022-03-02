@@ -16,7 +16,7 @@ A application which is used to optimize the loan distribution and subsequently k
 java -jar target/loan-lending-jar-with-dependencies.jar (inputFileLocation) (outputFileLocation) (N) (K)
 ```
 
-### Sample Input
+### Example
 ```
 java -jar target/loan-lending-jar-with-dependencies.jar input.json output.txt 50000 1000
 ```
