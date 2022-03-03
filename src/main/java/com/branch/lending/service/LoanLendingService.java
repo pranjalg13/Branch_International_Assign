@@ -49,7 +49,7 @@ public class LoanLendingService {
 
             TreeSet<LoanObj> loanObjTreeSet = loansorderByRepaymentDateFeeAndPrincipal(loanObjs);
             for (LoanObj loanObj : loanObjTreeSet) {
-                if (!activeLoanCustomerId.contains(loanObj.getCustomer_id()) && isCashAtHandSufficient(loanObj.getPrincipal())) {
+                if (!activeLoanCustomerId.contains(loanObj.getCustomer_id()) && isHandCashSufficient(loanObj.getPrincipal())) {
                     activeLoanObjs.add(loanObj);
                     activeLoanCustomerId.add(loanObj.getCustomer_id());
                     cashAtHand -= loanObj.getPrincipal();
@@ -117,7 +117,7 @@ public class LoanLendingService {
         tempActiveLoanObjs = new HashSet<>();
     }
 
-    public boolean isCashAtHandSufficient(double principal) {
+    public boolean isHandCashSufficient(double principal) {
         return cashAtHand > principal;
     }
 
