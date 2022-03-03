@@ -47,7 +47,7 @@ public class LoanLendingService {
 
         if (activeLoanObjs.size() < maxNumberOfActiveLoans) {
 
-            TreeSet<LoanObj> loanObjTreeSet = loansorderByRepaymentDateFeeAndPrincipal(loanObjs);
+            TreeSet<LoanObj> loanObjTreeSet = loansOrderByRepaymentDateFeeAndPrincipal(loanObjs);
             for (LoanObj loanObj : loanObjTreeSet) {
                 if (!activeLoanCustomerId.contains(loanObj.getCustomer_id()) && isHandCashSufficient(loanObj.getPrincipal())) {
                     activeLoanObjs.add(loanObj);
@@ -68,7 +68,7 @@ public class LoanLendingService {
 
         WritingToFileService writingToFileService = new WritingToFileService();
         LoanObj[] loanObjs = writingToFileService.getLoansFromInputPath(inputFile);
-        Set<LoanObj> filteredLoanObjs = filterLoans(loanObjs);
+        Set<LoanObj> filteredLoanObjs = loanFiltering(loanObjs);
         processFilteredLoans(filteredLoanObjs);
         writingToFileService.writeToOutputFile(loanApplicationIds, outputFile);
         //Printing LoanIds
@@ -90,7 +90,7 @@ public class LoanLendingService {
         return loanDateMap;
     }
 
-    public TreeSet<LoanObj> loansorderByRepaymentDateFeeAndPrincipal(Set<LoanObj> loanObjs) {
+    public TreeSet<LoanObj> loansOrderByRepaymentDateFeeAndPrincipal(Set<LoanObj> loanObjs) {
         TreeSet<LoanObj> loanObjSet = new TreeSet<LoanObj>((o1, o2) -> {
             if (o1.getFinalRepaymentDate().equals(o2.getFinalRepaymentDate())) {
                 if (o1.getFee() == o2.getFee()) {
@@ -136,7 +136,7 @@ public class LoanLendingService {
         return null;
     }
 
-    public Set<LoanObj> filterLoans(LoanObj[] loanObjs) {
+    public Set<LoanObj> loanFiltering(LoanObj[] loanObjs) {
         Set<LoanObj> loanObjSet = new HashSet<>();
         for (int index = 0; index < loanObjs.length; index++) {
             LoanObj loanObj = loanObjs[index];
