@@ -1,5 +1,5 @@
 # (Assignment) Loan Lending Oracle
-A application which is used to optimize the loan distribution and subsequently keeping maximum in hand
+A application which is used to optimize the loan distribution and subsequently keeping maximum in hand cash
 
 # Tech Stack , Requirements & Tools
 - Java
@@ -13,7 +13,7 @@ A application which is used to optimize the loan distribution and subsequently k
 - Run **mvn clean package** in terminal to compile jar or in intellij use the Maven Panel to compile
 - Now run the generated jar with following command
 ```
-java -jar target/loan-lending-jar-with-dependencies.jar (inputFileLocation) (outputFileLocation) (N) (K)
+java -jar target/loan-lending-jar-with-dependencies.jar (input-json-location) (output-file-location) (N) (K)
 ```
 
 ### Example
