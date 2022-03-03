@@ -23,4 +23,4 @@ java -jar target/loan-lending-jar-with-dependencies.jar input.json output.txt 50
 
 ## Submission By
 - Name: Pranjal Goyal 
-- email: pranjalgoyal13@gmail.com
+- Email: pranjalgoyal13@gmail.com

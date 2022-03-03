@@ -8,31 +8,31 @@ import java.util.TreeMap;
 public class LoanObj {
 
 
-    private long applicationId;
-    private long customerId;
+    private long application_id;
+    private long customer_id;
     private double principal;
     private double fee;
-    private Date disbursementDate;
-    private List<RepaymentObj> repaymentObjs;
+    private Date disbursement_date;
+    private List<RepaymentObj> repayments;
     private double totaledAmount;
     private boolean isLoanIncomplete;
 
 
     //Generating Setters and Getters
-    public long getApplicationId() {
-        return applicationId;
+    public long getApplication_id() {
+        return application_id;
     }
 
-    public void setApplicationId(long applicationId) {
-        this.applicationId = applicationId;
+    public void setApplication_id(long application_id) {
+        this.application_id = application_id;
     }
 
-    public long getCustomerId() {
-        return customerId;
+    public long getCustomer_id() {
+        return customer_id;
     }
 
-    public void setCustomerId(long customerId) {
-        this.customerId = customerId;
+    public void setCustomer_id(long customer_id) {
+        this.customer_id = customer_id;
     }
 
     public double getPrincipal() {
@@ -51,20 +51,20 @@ public class LoanObj {
         this.fee = fee;
     }
 
-    public Date getDisbursementDate() {
-        return disbursementDate;
+    public Date getDisbursement_date() {
+        return disbursement_date;
     }
 
-    public void setDisbursementDate(Date disbursementDate) {
-        this.disbursementDate = disbursementDate;
+    public void setDisbursement_date(Date disbursement_date) {
+        this.disbursement_date = disbursement_date;
     }
 
     public List<RepaymentObj> getRepayments() {
-        return repaymentObjs;
+        return repayments;
     }
 
     public void setRepayments(List<RepaymentObj> repaymentObjs) {
-        this.repaymentObjs = repaymentObjs;
+        this.repayments = repaymentObjs;
     }
 
     public double getAmountRepaid() {

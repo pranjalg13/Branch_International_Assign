@@ -49,11 +49,11 @@ public class LoanLendingService {
 
             TreeSet<LoanObj> loanObjTreeSet = loansorderByRepaymentDateFeeAndPrincipal(loanObjs);
             for (LoanObj loanObj : loanObjTreeSet) {
-                if (!activeLoanCustomerId.contains(loanObj.getCustomerId()) && isCashAtHandSufficient(loanObj.getPrincipal())) {
+                if (!activeLoanCustomerId.contains(loanObj.getCustomer_id()) && isCashAtHandSufficient(loanObj.getPrincipal())) {
                     activeLoanObjs.add(loanObj);
-                    activeLoanCustomerId.add(loanObj.getCustomerId());
+                    activeLoanCustomerId.add(loanObj.getCustomer_id());
                     cashAtHand -= loanObj.getPrincipal();
-                    loanApplicationIds.add(loanObj.getApplicationId());
+                    loanApplicationIds.add(loanObj.getApplication_id());
                 }
                 //Checking for concurrent loans < k
                 if (activeLoanObjs.size() > maxNumberOfActiveLoans) {
@@ -81,10 +81,10 @@ public class LoanLendingService {
         Map<Date, Set<LoanObj>> loanDateMap = new TreeMap<>(Comparator.naturalOrder());
 
         filteredLoanObjs.stream().forEach(filteredLoanObj -> {
-            if (!loanDateMap.containsKey(filteredLoanObj.getDisbursementDate())) {
-                loanDateMap.put(filteredLoanObj.getDisbursementDate(), new HashSet<>());
+            if (!loanDateMap.containsKey(filteredLoanObj.getDisbursement_date())) {
+                loanDateMap.put(filteredLoanObj.getDisbursement_date(), new HashSet<>());
             }
-            loanDateMap.get(filteredLoanObj.getDisbursementDate()).add(filteredLoanObj);
+            loanDateMap.get(filteredLoanObj.getDisbursement_date()).add(filteredLoanObj);
 
         });
         return loanDateMap;
@@ -109,7 +109,7 @@ public class LoanLendingService {
         for (LoanObj loanObj : activeLoanObjs) {
             if (loanObj.getFinalRepaymentDate().compareTo(date) < 0) {
                tempActiveLoanObjs.add(loanObj);
-               activeLoanCustomerId.remove(loanObj.getCustomerId());
+               activeLoanCustomerId.remove(loanObj.getCustomer_id());
                cashAtHand += loanObj.getAmountRepaid();
             }
         }
@@ -148,7 +148,7 @@ public class LoanLendingService {
                 }
             }
             double netAmount = amount - principal;
-            if (netAmount < 0 || getDurationBetweenDays(loanObj.getDisbursementDate(), loanObj.getFinalRepaymentDate()) > 90) {
+            if (netAmount < 0 || getDurationBetweenDays(loanObj.getDisbursement_date(), loanObj.getFinalRepaymentDate()) > 90) {
                 continue;
             }
             loanObjSet.add(loanObj);
