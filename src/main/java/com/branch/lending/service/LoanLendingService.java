@@ -1,7 +1,7 @@
 package com.branch.lending.service;
 
 import com.branch.lending.pojo.LoanObj;
-import com.branch.lending.pojo.Repayment;
+import com.branch.lending.pojo.RepaymentObj;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,30 +22,17 @@ public class LoanLendingService {
     private String outputFile;
 
     //Constructor
-    public LoanLendingService(String inputFile, String outputFile, double intialCapital, long maxNumberOfActiveLoans) {
-        this.cashAtHand = intialCapital;
+    public LoanLendingService(String inputFile, String outputFile, double initialCapital, long maxNumberOfActiveLoans) {
+        this.cashAtHand = initialCapital;
         this.maxNumberOfActiveLoans = maxNumberOfActiveLoans;
         this.inputFile = inputFile;
         this.outputFile = outputFile;
-
         loansProcessing();
-    }
-
-    public void loansProcessing() {
-
-        WritingToFileService writingToFileService = new WritingToFileService();
-        LoanObj[] loanObjs = writingToFileService.getLoansFromInputPath(inputFile);
-        Set<LoanObj> filteredLoanObjs = filterLoans(loanObjs);
-        processFilteredLoans(filteredLoanObjs);
-        writingToFileService.writeToOutputFile(loanApplicationIds, outputFile);
-        //Printing LoanIds
-        System.out.println(loanApplicationIds.toString());
-
     }
 
     public void processFilteredLoans(Set<LoanObj> filteredLoanObjs) {
 
-        Map<Date, Set<LoanObj>> orderedLoans = orderLoansByDate(filteredLoanObjs);
+        Map<Date, Set<LoanObj>> orderedLoans = loanOrderByDate(filteredLoanObjs);
 
         for (Map.Entry<Date, Set<LoanObj>> orderedLoan : orderedLoans.entrySet()) {
             processDailyLoans(orderedLoan.getKey(), orderedLoan.getValue());
@@ -60,7 +47,7 @@ public class LoanLendingService {
 
         if (activeLoanObjs.size() < maxNumberOfActiveLoans) {
 
-            TreeSet<LoanObj> loanObjTreeSet = orderLoansByRepaymentDateFeeAndPrincipal(loanObjs);
+            TreeSet<LoanObj> loanObjTreeSet = loansorderByRepaymentDateFeeAndPrincipal(loanObjs);
             for (LoanObj loanObj : loanObjTreeSet) {
                 if (!activeLoanCustomerId.contains(loanObj.getCustomerId()) && isCashAtHandSufficient(loanObj.getPrincipal())) {
                     activeLoanObjs.add(loanObj);
@@ -77,7 +64,20 @@ public class LoanLendingService {
 
     }
 
-    public Map<Date, Set<LoanObj>> orderLoansByDate(Set<LoanObj> filteredLoanObjs) {
+    public void loansProcessing() {
+
+        WritingToFileService writingToFileService = new WritingToFileService();
+        LoanObj[] loanObjs = writingToFileService.getLoansFromInputPath(inputFile);
+        Set<LoanObj> filteredLoanObjs = filterLoans(loanObjs);
+        processFilteredLoans(filteredLoanObjs);
+        writingToFileService.writeToOutputFile(loanApplicationIds, outputFile);
+        //Printing LoanIds
+        System.out.println(loanApplicationIds.toString());
+
+    }
+
+
+    public Map<Date, Set<LoanObj>> loanOrderByDate(Set<LoanObj> filteredLoanObjs) {
         Map<Date, Set<LoanObj>> loanDateMap = new TreeMap<>(Comparator.naturalOrder());
 
         filteredLoanObjs.stream().forEach(filteredLoanObj -> {
@@ -90,7 +90,7 @@ public class LoanLendingService {
         return loanDateMap;
     }
 
-    public TreeSet<LoanObj> orderLoansByRepaymentDateFeeAndPrincipal(Set<LoanObj> loanObjs) {
+    public TreeSet<LoanObj> loansorderByRepaymentDateFeeAndPrincipal(Set<LoanObj> loanObjs) {
         TreeSet<LoanObj> loanObjSet = new TreeSet<LoanObj>((o1, o2) -> {
             if (o1.getFinalRepaymentDate().equals(o2.getFinalRepaymentDate())) {
                 if (o1.getFee() == o2.getFee()) {
@@ -142,9 +142,9 @@ public class LoanLendingService {
             LoanObj loanObj = loanObjs[index];
             double principal = loanObj.getPrincipal();
             double amount = 0;
-            for (Repayment repayment : loanObj.getRepayments()) {
-                if (repayment.getDate().before(lastDayOfYear())) {
-                    amount += repayment.getAmount();
+            for (RepaymentObj repaymentObj : loanObj.getRepayments()) {
+                if (repaymentObj.getDate().before(lastDayOfYear())) {
+                    amount += repaymentObj.getAmount();
                 }
             }
             double netAmount = amount - principal;

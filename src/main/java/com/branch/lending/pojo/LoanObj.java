@@ -13,7 +13,7 @@ public class LoanObj {
     private double principal;
     private double fee;
     private Date disbursementDate;
-    private List<Repayment> repayments;
+    private List<RepaymentObj> repaymentObjs;
     private double totaledAmount;
     private boolean isLoanIncomplete;
 
@@ -59,36 +59,28 @@ public class LoanObj {
         this.disbursementDate = disbursementDate;
     }
 
-    public List<Repayment> getRepayments() {
-        return repayments;
+    public List<RepaymentObj> getRepayments() {
+        return repaymentObjs;
     }
 
-    public void setRepayments(List<Repayment> repayments) {
-        this.repayments = repayments;
-    }
-
-    public double getTotaledAmount() {
-        double netAmount = 0.0;
-        for (Repayment repayment: repayments) {
-            netAmount += repayment.getAmount();
-        }
-        return netAmount - principal;
+    public void setRepayments(List<RepaymentObj> repaymentObjs) {
+        this.repaymentObjs = repaymentObjs;
     }
 
     public double getAmountRepaid() {
-        List<Repayment> repayments = getRepayments();
+        List<RepaymentObj> repaymentObjs = getRepayments();
         double amount = 0 ;
-        for (Repayment repayment : repayments) {
-            amount += repayment.getAmount() ;
+        for (RepaymentObj repaymentObj : repaymentObjs) {
+            amount += repaymentObj.getAmount() ;
         }
         return amount;
     }
 
     public Date getFinalRepaymentDate() {
-        List<Repayment> repayments = getRepayments();
+        List<RepaymentObj> repaymentObjs = getRepayments();
         TreeMap<Date, Double> loanDateMap = new TreeMap<>(Comparator.naturalOrder());
-        for (Repayment repayment : repayments) {
-            loanDateMap.put(repayment.getDate(), repayment.getAmount());
+        for (RepaymentObj repaymentObj : repaymentObjs) {
+            loanDateMap.put(repaymentObj.getDate(), repaymentObj.getAmount());
         }
         return loanDateMap.lastKey();
     }

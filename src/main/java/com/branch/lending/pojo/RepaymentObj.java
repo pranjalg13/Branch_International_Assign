@@ -2,7 +2,7 @@ package com.branch.lending.pojo;
 
 import java.util.Date;
 
-public class Repayment {
+public class RepaymentObj {
 
     private Date date;
     private double amount;
